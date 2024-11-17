@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Supplier, Category
+from .models import Product
 
 class ProductSerializer(serializers.ModelSerializer):
     supplier = serializers.CharField(source='supplier.fantasy_name')

@@ -1,0 +1,14 @@
+version: "3"
+services:
+  backend-tg:
+    env_file:
+      - .env
+    image: backend-tg
+    build: .
+    network_mode: host
+    ports:
+      - "${EXTERNAL_PORT}:8000"
+    container_name: backend-tg
+    entrypoint: [ "gunicorn", "project.wsgi", "-b", "0.0.0.0:8000", "-w", "${WORKERS}", "--max-requests", "${MAX_REQUESTS}", "-t", "30" ]
+
+    

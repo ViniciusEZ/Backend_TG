@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from decouple import config
 from dj_database_url import parse as db_url
-import dj_db_conn_pool
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,10 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     "corsheaders",
+    "rest_framework",
     "project.acl",
     "project.products",
-    "rest_framework"
+    "project.payment"
 ]
 
 MIDDLEWARE = [
@@ -93,14 +95,37 @@ DATABASES = {
 
 DATABASES['default']['ENGINE'] = 'dj_db_conn_pool.backends.postgresql'
 DATABASES['default']['POOL_OPTIONS'] = {
-            'POOL_SIZE': 10,
-            'MAX_OVERFLOW': 10,
+            'POOL_SIZE': 40,
+            'MAX_OVERFLOW': 50,
             'RECYCLE': 24 * 60 * 60
 }
 
 
 if config("DATABASE_DEFAULT_OPTIONS_SEARCH_PATH", default=None):
     DATABASES['default']['OPTIONS'] = {'options' : f'-c search_path={config("DATABASE_DEFAULT_OPTIONS_SEARCH_PATH")}'}
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',  
+        'LOCATION': config('REDIS_URL'),     
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DATE_FORMAT": "%b %d, %Y",
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

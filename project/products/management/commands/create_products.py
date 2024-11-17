@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO)
 class Command(BaseCommand):
     def handle(self, *args, **options):
         product = models.Product.objects.get(id=1)
-        product_category = models.ProductCategory.objects.filter(product_id=product.id)
+        product_category = models.ProductCategoryDetails.objects.filter(product_id=product.id)
         
         for number in tqdm(range(0, 150000)):
             new_product = models.Product.objects.create(
@@ -21,7 +21,7 @@ class Command(BaseCommand):
             )
 
             for category in product_category:
-                new_product_category = models.ProductCategory.objects.create(
+                new_product_category = models.ProductCategoryDetails.objects.create(
                     product_id=new_product.id,
                     category_details_id=category.category_details.id
                 )

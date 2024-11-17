@@ -9,13 +9,13 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import UserManager
 
-# Create your models here.
-
-class User(AbstractBaseUser, PermissionsMixin):    
+class User(AbstractBaseUser):    
     name = models.CharField(null=True, max_length=128)
     email = models.EmailField(_('email address'), unique=True)
     
     password = models.CharField(_('password'), max_length=128)
+    phone_number = models.TextField(null=True)
+    cpf = models.CharField(max_length=11, null=True)
     
     is_active = models.BooleanField(
         _('active'),
@@ -27,15 +27,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
-    
-    
-    # Custom Fields
-    
-    # first_name = models.CharField(_('first_name'), max_length=150, blank=True)
-    # last_name = models.CharField(_('last_name'), max_length=150, blank=True)
-    
-    
-    # Django stuff
     
     objects = UserManager()
     
@@ -56,3 +47,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         db_table = 'user"."user'
+
+
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    cep = models.CharField(max_length=8)
+    logradouro = models.CharField(max_length=128)
+    numero = models.CharField(max_length=16)
+    complemento = models.CharField(max_length=16)
+    bairro = models.CharField(max_length=64)
+    cidade = models.CharField(max_length=64)
+    uf = models.CharField(max_length=2)
+
+    class Meta:
+        db_table = 'user"."address'    
