@@ -31,10 +31,10 @@ class CategoryDetails(models.Model):
 
 class Product(models.Model):
     name = models.CharField(unique=True, max_length=64)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2, db_index=True)
+    quantity = models.PositiveIntegerField(db_index=True)
     supplier = models.ForeignKey(Supplier, on_delete=models.PROTECT)
-    image_link = models.URLField()
+    image_link = models.URLField(db_index=True)
     category = models.ForeignKey(Category, null=True, on_delete=models.PROTECT)
 
     class Meta:

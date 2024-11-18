@@ -4,7 +4,7 @@ from adrf.decorators import api_view as async_api_view
 from . import models
 from django.db import IntegrityError
 from project.products import models as products_models
-
+from asgiref.sync import sync_to_async
 
 @async_api_view(['POST'])
 async def register_user(request):
@@ -35,6 +35,7 @@ async def register_user(request):
 
     return Response('User registered successfully!', status=200)
 
+@sync_to_async
 @api_view(['GET', 'POST'])
 def get_user(request):
     try:
@@ -56,7 +57,7 @@ def get_user(request):
 
     return Response(user_data, status=200)
 
-
+@sync_to_async
 @api_view(['GET', 'POST'])
 def purchase_history(request):
     try:

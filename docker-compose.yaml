@@ -9,6 +9,6 @@ services:
     ports:
       - "${EXTERNAL_PORT}:8000"
     container_name: backend-tg
-    entrypoint: [ "gunicorn", "project.wsgi", "-b", "0.0.0.0:8000", "-w", "${WORKERS}", "--max-requests", "${MAX_REQUESTS}", "-t", "30" ]
+    entrypoint: [ "gunicorn", "project.wsgi", "-b", "0.0.0.0:8000", "-w", "${WORKERS}", "--max-requests", "${MAX_REQUESTS}", "-t", "60" ]
 
     

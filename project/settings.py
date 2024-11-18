@@ -93,12 +93,12 @@ DATABASES = {
     "default": config("DATABASE_URL", default="sqlite:///:memory:", cast=db_url)
 }
 
-DATABASES['default']['ENGINE'] = 'dj_db_conn_pool.backends.postgresql'
-DATABASES['default']['POOL_OPTIONS'] = {
-            'POOL_SIZE': 40,
-            'MAX_OVERFLOW': 50,
-            'RECYCLE': 24 * 60 * 60
-}
+# DATABASES['default']['ENGINE'] = 'dj_db_conn_pool.backends.postgresql'
+# DATABASES['default']['POOL_OPTIONS'] = {
+#             'POOL_SIZE': 250,
+#             'MAX_OVERFLOW': 260,
+#             'RECYCLE': 24 * 60 * 60
+# }
 
 
 if config("DATABASE_DEFAULT_OPTIONS_SEARCH_PATH", default=None):

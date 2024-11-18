@@ -19,6 +19,7 @@ adrf = "^0.1.8"
 django-redis = "^5.4.0"
 locust = "^2.32.2"
 djangorestframework-simplejwt = "^5.3.1"
+faker = "^33.0.0"
 
 
 [build-system]

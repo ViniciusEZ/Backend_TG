@@ -5,6 +5,7 @@ from django.db.models import Q, Min, Max
 from rest_framework.pagination import PageNumberPagination
 from .serializers import ProductSerializer
 from django.views.decorators.cache import cache_page
+from asgiref.sync import sync_to_async
 
 class CustomPagination(PageNumberPagination):
     page_size = 12  
@@ -34,6 +35,7 @@ def get_products(request):
     serializer = ProductSerializer(result_page, many=True)
 
     return paginator.get_paginated_response(serializer.data)
+
 
 @api_view(['GET'])
 @cache_page(60 * 3)
@@ -88,6 +90,7 @@ def search_products(request, search):
     }
 
     return paginator.get_paginated_response(response_data)
+
 
 @api_view(['GET'])
 @cache_page(60 * 3)
