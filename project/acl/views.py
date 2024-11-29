@@ -22,7 +22,7 @@ def register_user(request):
         )
 
         user.set_password(user_password)
-        user.asave()
+        user.save()
     except IntegrityError:
         return Response('User already exists!', status=409)
 
