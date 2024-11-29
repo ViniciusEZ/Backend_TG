@@ -14,7 +14,6 @@ class CustomPagination(PageNumberPagination):
 
 
 @api_view(['GET'])
-@cache_page(60 * 3)
 def get_products(request):
     sort_option = request.query_params.get('sort', 'default')
 
@@ -38,7 +37,6 @@ def get_products(request):
 
 
 @api_view(['GET'])
-@cache_page(60 * 3)
 def search_products(request, search):
     sort_option = request.query_params.get('sort', 'default')
     selected_suppliers = request.query_params.getlist('suppliers')
@@ -93,7 +91,6 @@ def search_products(request, search):
 
 
 @api_view(['GET'])
-@cache_page(60 * 3)
 def get_product(request, id):
     product = models.Product.objects.filter(id=id)
     

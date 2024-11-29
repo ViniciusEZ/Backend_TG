@@ -1,13 +1,11 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from adrf.decorators import api_view as async_api_view
 from . import models
 from django.db import IntegrityError
 from project.products import models as products_models
-from asgiref.sync import sync_to_async
 
-@async_api_view(['POST'])
-async def register_user(request):
+@api_view(['POST'])
+def register_user(request):
     user_name = request.data.get('name')    
     user_email = request.data.get('email')
     user_password = request.data.get('password')
@@ -16,7 +14,7 @@ async def register_user(request):
     user_addresses = request.data.get('addresses')
 
     try:
-        user = await models.User.objects.acreate(
+        user = models.User.objects.create(
             name=user_name,
             email=user_email,
             phone_number=user_phone_number,
@@ -24,18 +22,18 @@ async def register_user(request):
         )
 
         user.set_password(user_password)
-        await user.asave()
+        user.asave()
     except IntegrityError:
         return Response('User already exists!', status=409)
 
     for address in user_addresses:
-        await models.Address.objects.acreate(
+        models.Address.objects.create(
             **address, user=user
         ) 
 
     return Response('User registered successfully!', status=200)
 
-@sync_to_async
+
 @api_view(['GET', 'POST'])
 def get_user(request):
     try:
@@ -57,7 +55,6 @@ def get_user(request):
 
     return Response(user_data, status=200)
 
-@sync_to_async
 @api_view(['GET', 'POST'])
 def purchase_history(request):
     try:
