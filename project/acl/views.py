@@ -35,7 +35,6 @@ async def register_user(request):
 
     return Response('User registered successfully!', status=200)
 
-@sync_to_async
 @api_view(['GET', 'POST'])
 def get_user(request):
     try:
@@ -57,7 +56,6 @@ def get_user(request):
 
     return Response(user_data, status=200)
 
-@sync_to_async
 @api_view(['GET', 'POST'])
 def purchase_history(request):
     try:
